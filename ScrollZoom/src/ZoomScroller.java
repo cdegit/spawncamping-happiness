@@ -17,7 +17,7 @@ public class ZoomScroller extends JComponent implements ChangeListener {
 	// Constructors
 	
 	ZoomScroller() {
-		init(new DefaultBoundedRangeModel());
+		init(new DefaultBoundedRangeModel(1, 1, defaultMin, defaultMax));
 	}
 	
 	ZoomScroller(BoundedRangeModel m) {
@@ -25,7 +25,7 @@ public class ZoomScroller extends JComponent implements ChangeListener {
 	}
 	
 	ZoomScroller(int min, int max) {
-		init(new DefaultBoundedRangeModel(1, 1, min, max));
+		init(new DefaultBoundedRangeModel(1, 1, min, max)); // val, bound, min, max
 	}
 	
 	protected void init(BoundedRangeModel m) {
@@ -57,12 +57,12 @@ public class ZoomScroller extends JComponent implements ChangeListener {
 	// UI
 	
 	/*
-	public void setUI(ZoomScrollerUI) {
+	public void setUI(ZoomScrollerUI ui) {
 		super.setUI(ui);
 	}
-	*/
 	
-	/*
+	
+	
 	public void updateUI() {
 		setUI((ZoomScrollerUI)UIManager.getUI(this));
 		invalidate();
@@ -115,13 +115,34 @@ public class ZoomScroller extends JComponent implements ChangeListener {
 		}
 	}
 	
+	public double getImageScale() {
+		return imageScale;
+	}
+	
 	// ***************************************************
 	
 	// Display Specific Properties
 	
 	private Dimension minSize = new Dimension(100, 100);
 	private Dimension prefSize = new Dimension(300, 300);
+	private int defaultMin = -10;
+	private int defaultMax = 10;
+	private double imageScale = 1;
+	private double minScale = 0.25;
+	private double maxScale = 4;
 
+	public void calculateImageScale() {
+		double result = 1;
+		if(model.getValue() > 1) {
+			double ratio = model.getMaximum()/model.getValue();
+			result = ratio * maxScale;
+		} else if(model.getValue() < 1) {
+			double ratio = Math.abs(model.getMinimum()/model.getValue());
+			result = ratio * minScale;
+		} 
+		imageScale = result;
+	}
+	
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		repaint();
