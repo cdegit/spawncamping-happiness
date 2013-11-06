@@ -11,19 +11,33 @@ public class ZoomScrollerUI extends JPanel implements ActionListener, ChangeList
 	private JLabel bigger = new JLabel("bigger");
 	private JLabel thedogPicture;
 	
+	int value;
+	
 	BufferedImage image;
 	
 	ImageIcon dogicon = new ImageIcon("image1.jpeg");
 	
+	/*
+	Image img = dogicon.getImage();
+	BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB); 
+	Graphics g = bi.createGraphics();
+
+	g.drawImage(img, 500, 500, 500, 500, null); 
+	ImageIcon newIcon = new ImageIcon(bi);
+*/
+	
 	static final int ZOOM_MIN = 0;
-	static final int ZOOM_MAX = 100;
-	static final int ZOOM_INIT = 50;
+	static final int ZOOM_MAX = 500;
+	static final int ZOOM_INIT = 250;
 	
 	
 	public ZoomScrollerUI() {
 		window.setSize(700, 700);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+
+
+
+ 
 		
 		final JSlider ZoomSlider = new JSlider(JSlider.HORIZONTAL, ZOOM_MIN, ZOOM_MAX, ZOOM_INIT); //do you connect it here?
 		
@@ -34,13 +48,45 @@ public class ZoomScrollerUI extends JPanel implements ActionListener, ChangeList
 		ZoomSlider.setSnapToTicks(true);
 		ZoomSlider.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent e) {
-				int value = ZoomSlider.getValue();
+				value = ZoomSlider.getValue();
+				
 				//scale = (value + 4) / 20.0;
+				System.out.println(value);
 				revalidate();
 				repaint();
+				
+		//==========================================================================================================================
+				Image img = dogicon.getImage();
+				BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+				BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+				Graphics g = bi.createGraphics();
+				boolean myBool = g.drawImage(img, 0, 0, 640 + value, 480 + value, null);
+				//System.out.println(myBool);
+				ImageIcon newIcon = new ImageIcon(bi);
+				thedogPicture = new JLabel("", newIcon, JLabel.CENTER);
+				thedogPicture.setHorizontalAlignment(JLabel.CENTER);
+				thedogPicture.setAlignmentX(Component.CENTER_ALIGNMENT);
+				thedogPicture.setBorder(BorderFactory.createCompoundBorder(
+			                BorderFactory.createLoweredBevelBorder(),
+			                BorderFactory.createEmptyBorder(10,10,10,10)));
+				System.out.println(myBool);
+		//==========================================================================================================================		
+
 			}
 		});
 		Container c = window.getContentPane();
+		
+		
+		// ================= I MOVED THIS SECTION UP THERE BECAUSE I THOUGHT IT WILL KEEP ON REDRAWING AS I CHANGE THE VALUE, BUT NOPE
+		Image img = dogicon.getImage();
+		BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+		BufferedImage bi = new BufferedImage(img.getWidth(null), img.getHeight(null), BufferedImage.TYPE_INT_ARGB);
+		Graphics g = bi.createGraphics();
+		boolean myBool = g.drawImage(img, 0, 0, 640 + value, 480 + value, null);
+		System.out.println(myBool);
+		ImageIcon newIcon = new ImageIcon(bi);
+		
+		
 		
 		JPanel PicScreen = new JPanel();
 		BorderLayout LAYOUT_STYLE_BORDER = new BorderLayout();
@@ -48,12 +94,17 @@ public class ZoomScrollerUI extends JPanel implements ActionListener, ChangeList
 		BoxLayout LAYOUT_STYLE_BOX = new BoxLayout(PicScreen, BoxLayout.PAGE_AXIS);
 		c.setLayout(LAYOUT_STYLE_BORDER);
 		//PicScreen.setLayout(LAYOUT_STYLE_BOX);
-		thedogPicture = new JLabel("", dogicon, JLabel.CENTER);
+		thedogPicture = new JLabel("", newIcon, JLabel.CENTER);
 		thedogPicture.setHorizontalAlignment(JLabel.CENTER);
 		thedogPicture.setAlignmentX(Component.CENTER_ALIGNMENT);
 		thedogPicture.setBorder(BorderFactory.createCompoundBorder(
 	                BorderFactory.createLoweredBevelBorder(),
 	                BorderFactory.createEmptyBorder(10,10,10,10)));
+		
+		// ====================================================================================================================================
+		
+		
+		
 		c.add(smaller, BorderLayout.LINE_START);
 		c.add(ZoomSlider, BorderLayout.CENTER);
 		c.add(bigger, BorderLayout.LINE_END);
@@ -62,6 +113,8 @@ public class ZoomScrollerUI extends JPanel implements ActionListener, ChangeList
 		System.out.println("bye");
 		window.setVisible(true);
 	}
+	
+
 		
 	
 
@@ -116,6 +169,14 @@ public class ZoomScrollerUI extends JPanel implements ActionListener, ChangeList
 	}, ChangeListener {
 	 */
 		
+	private void BufferedImage(int width, int height, int typeIntArgb) {
+		// TODO Auto-generated method stub
+		
+	}
+
+
+
+
 	private ImageIcon createImageIcon(String string, String string2) {
 		// TODO Auto-generated method stub
 		return null;
