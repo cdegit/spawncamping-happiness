@@ -1,20 +1,12 @@
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
 
 import javax.swing.*;
 import javax.swing.plaf.*;
 
 public class BasicZoomScrollerUI extends ZoomScrollerUI implements MouseListener {
 	
-    protected BufferedImage image;
 	protected ZoomScroller zs;
-    double scale = 1.0;
-    
-    protected JPanel imagePanel;
-    protected JPanel sliderPanel;
-    
-    protected JSlider slider;
     
     private int scrollX = 0;
     private int scrollY = 0;
@@ -32,7 +24,7 @@ public class BasicZoomScrollerUI extends ZoomScrollerUI implements MouseListener
 	private int defaultImgHeight = dogicon.getIconHeight();
 	
 	public BasicZoomScrollerUI() {
-
+		
 	}
 	
 	public static ComponentUI createUI(JComponent c) {
@@ -43,23 +35,7 @@ public class BasicZoomScrollerUI extends ZoomScrollerUI implements MouseListener
 	public void installUI(JComponent c) {
 		zs = (ZoomScroller) c;
 		zs.addMouseListener(this);
-		addComponents(c);
-	}
-	
-	public void addComponents(JComponent c) {
-		ZoomScroller zs = (ZoomScroller) c;
-		
-		slider = new JSlider();
-		sliderPanel = new JPanel();
-		sliderPanel.add(slider);
-		
-		imagePanel = new JPanel();
-		imagePanel.add(new JLabel("hello world!"));
-		
-		zs.content.add(imagePanel);
-		zs.content.add(sliderPanel);
-		
-	}
+	}	
 	
 	public void uninstallUI(JComponent c) {
 		zs = (ZoomScroller) c;
@@ -98,7 +74,14 @@ public class BasicZoomScrollerUI extends ZoomScrollerUI implements MouseListener
 		}
         
         g.drawImage(dogicon.getImage(), 0, 40, imgNewWidth, imgNewHeight + 40, 0, 0, dogicon.getIconWidth(), dogicon.getIconHeight(), null);
-       
+        
+        // Draw minus
+        g.setColor(Color.white);
+        g.fillRect(scrollX + 3,  scrollY + scrollHeight/2 - 1, 10, 3);
+        
+        // Draw plus
+        g.fillRect(scrollX + scrollWidth - 13,  scrollY + scrollHeight/2 - 1, 10, 3);
+        g.fillRect(scrollX + scrollWidth - 9, scrollY + scrollHeight/2 - 5, 3, 10);
 	}
 
 	public static void main(String[] args) {}

@@ -4,10 +4,6 @@ import javax.swing.*;
 
 
 public class ZoomScrollerTest extends JPanel {
-
-	/**
-	 * @param args
-	 */
 	
 	public ZoomScrollerTest() {
 		setLayout(new FlowLayout());
@@ -16,7 +12,6 @@ public class ZoomScrollerTest extends JPanel {
 	}
 	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		UIManager.put("ZoomScrollerUI", "BasicZoomScrollerUI");
 		
 		ZoomScrollerTest test = new ZoomScrollerTest();
