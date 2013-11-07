@@ -1,16 +1,14 @@
 import java.awt.*;
-import java.awt.event.*;
 
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.border.*;
-
 
 public class ZoomScroller extends JComponent implements ChangeListener {
 
 	// Properties
 	
 	private BoundedRangeModel model;
+	protected JPanel content = new JPanel();
 	
 	// ***************************************************
 	
@@ -33,7 +31,7 @@ public class ZoomScroller extends JComponent implements ChangeListener {
 		model.addChangeListener(this);
 		setMinimumSize(minSize);
 		setPreferredSize(prefSize);
-		//updateUI();
+		updateUI();
 	}
 	
 	public void setModel(BoundedRangeModel m) {
@@ -56,7 +54,7 @@ public class ZoomScroller extends JComponent implements ChangeListener {
 	
 	// UI
 	
-	/*
+	
 	public void setUI(ZoomScrollerUI ui) {
 		super.setUI(ui);
 	}
@@ -67,7 +65,10 @@ public class ZoomScroller extends JComponent implements ChangeListener {
 		setUI((ZoomScrollerUI)UIManager.getUI(this));
 		invalidate();
 	} 
-	*/
+	public ZoomScrollerUI getUI() {
+		return (ZoomScrollerUI)ui;
+	}
+	
 	
 	public String getUIClassID() {
 		return "ZoomScrollerUI";
@@ -113,34 +114,31 @@ public class ZoomScroller extends JComponent implements ChangeListener {
 			model.setValue(v);
 			firePropertyChange("value", old, v);
 		}
+		updateUI();
 	}
 	
-	public double getImageScale() {
-		return imageScale;
+	public double getMaxScale() {
+		return maxScale;
+	}
+	
+	public double getMinScale() {
+		return minScale;
 	}
 	
 	// ***************************************************
 	
 	// Display Specific Properties
 	
-	private Dimension minSize = new Dimension(100, 100);
-	private Dimension prefSize = new Dimension(300, 300);
-	private int defaultMin = -10;
-	private int defaultMax = 10;
-	private double imageScale = 1;
+	private Dimension minSize = new Dimension(400, 400);
+	private Dimension prefSize = new Dimension(650, 650);
+	private int defaultMin = -100;
+	private int defaultMax = 100;
 	private double minScale = 0.25;
 	private double maxScale = 4;
 
-	public void calculateImageScale() {
-		double result = 1;
-		if(model.getValue() > 1) {
-			double ratio = model.getMaximum()/model.getValue();
-			result = ratio * maxScale;
-		} else if(model.getValue() < 1) {
-			double ratio = Math.abs(model.getMinimum()/model.getValue());
-			result = ratio * minScale;
-		} 
-		imageScale = result;
+	
+	public double map(int val, float from1, float to1, double from2, double to2) {
+		return (val - from1) / (to1 - from1) * (to2 - from2) + from2;
 	}
 	
 	@Override
@@ -149,9 +147,6 @@ public class ZoomScroller extends JComponent implements ChangeListener {
 		
 	}
 	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
+	public static void main(String[] args) { }
 
 }
